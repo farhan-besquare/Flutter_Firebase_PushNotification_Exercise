@@ -11,15 +11,14 @@ void main() async {
   runApp(const MyApp());
 }
 
-String firebaseMessage = "Messages from Firebase";
+String firebaseMessage = "";
 
 Future<void> _handleMessage(RemoteMessage message) async {
   await Firebase.initializeApp();
 
   firebaseMessage = message.notification!.body.toString();
 
-  print(
-      'Message when App is running in the background: ${message.notification!.body}');
+  print('Background message: ${message.notification!.body}');
 }
 
 class MyApp extends StatelessWidget {
@@ -70,14 +69,14 @@ class _MyHomePageState extends State<MyHomePage> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('Firebase Alert!'),
+              title: const Text('Firebase Popup!'),
               content: Text(event.notification!.body!),
               actions: [
                 TextButton(
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    child: Text('Okay'))
+                    child: const Text('Okay'))
               ],
             );
           });
@@ -101,6 +100,13 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Container(
+              padding: const EdgeInsets.all(20),
+              child: const Text(
+                'Messages from Firebase',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
+              ),
+            ),
+            Container(
               alignment: Alignment.center,
               height: 200,
               width: 360,
@@ -111,8 +117,9 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Padding(
                 padding: const EdgeInsets.all(5.0),
                 child: Text(
-                  '$firebaseMessage',
-                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.w400),
+                  firebaseMessage,
+                  style: const TextStyle(
+                      fontSize: 28, fontWeight: FontWeight.w400),
                   textAlign: TextAlign.center,
                 ),
               ),
